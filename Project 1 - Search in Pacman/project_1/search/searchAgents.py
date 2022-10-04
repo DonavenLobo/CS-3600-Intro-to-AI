@@ -591,6 +591,44 @@ def foodHeuristic(state, problem):
 
     return min(dist) + closeToFar
 
+    # dist1 = []
+    # dist2 = []
+    # foodGridPositions = foodGrid.asList()
+    # if foodGridPositions == []:
+    #     # Already at goal state, no need to calculate heuristic
+    #     return 0
+    # # print(foodGridPositions)
+    # # print(foodGrid)
+    # # print(problem.walls)
+    #
+    # # finds which food pellets haven't been visited yet and adds the manhattan distance to distance array
+    # print("Test Start: ")
+    # # print(foodGridPositions)
+    # for food in foodGridPositions:
+    #     # print(food)
+    #     dist1.append(util.manhattanDistance(food, position))
+    # print(foodGridPositions)
+    # close1 = foodGridPositions[dist1.index(min(dist1))]
+    #
+    # if len(foodGridPositions) > 1:
+    #     foodGridPositions.pop(dist1.index(min(dist1)))
+    #     print(foodGridPositions)
+    #     for food in foodGridPositions:
+    #         # print(food)
+    #         dist2.append(util.manhattanDistance(food, close1))
+    #     close2 = foodGridPositions[dist2.index(min(dist2))]
+    #     far = foodGridPositions[dist2.index(max(dist2))]
+    #
+    #     nearDist1 = util.manhattanDistance(position, close1)
+    #     nearDist2 = util.manhattanDistance(close1, close2)
+    #     farDist = util.manhattanDistance(close2, far)
+    #     print("Test End")
+    #     return nearDist1 + nearDist2 + farDist
+    # else:
+    #     far = foodGridPositions[dist1.index(max(dist1))]
+    #     nearDist1 = util.manhattanDistance(position, close1)
+    #     farDist = util.manhattanDistance(close1, far)
+    #     return nearDist1 + farDist
 
 class ClosestDotSearchAgent(SearchAgent):
     """
