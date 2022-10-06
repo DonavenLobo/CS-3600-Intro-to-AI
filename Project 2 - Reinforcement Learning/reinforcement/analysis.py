@@ -24,38 +24,44 @@ def question2():
     answerNoise = 0.0
     return answerDiscount, answerNoise
 
+# Q3:
+# Lower Discount Factor for closer rewards, Higher Discount factor for further better rewards
+# Big negative living reward promotes faster path, Small positive living reward could be bad (would want to live forever)
+# Small negative reward tells agent to get a move on
+# Noise is the probability the agent does not do what was intended
+
 def question3a():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+    answerDiscount = 0.2
+    answerNoise = 0.0
+    answerLivingReward = -0.5
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question3b():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+    answerDiscount = 0.2
+    answerNoise = 0.1
+    answerLivingReward = -0.5
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question3c():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+    answerDiscount = 0.9
+    answerNoise = 0.0
+    answerLivingReward = 0.9
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question3d():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+    answerDiscount = 0.2
+    answerNoise = 0.1
+    answerLivingReward = 1
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question3e():
-    answerDiscount = None
-    answerNoise = None
-    answerLivingReward = None
+    answerDiscount = 1.2
+    answerNoise = 0.0
+    answerLivingReward = 20
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
