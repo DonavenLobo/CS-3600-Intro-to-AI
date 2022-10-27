@@ -120,6 +120,7 @@ class QLearningAgent(ReinforcementAgent):
         if (len(legalActions) is 0): # If no legal actions, return None
             return action
         else:
+            # Implementing Epsilon Greedy
             prob_eps = util.flipCoin(self.epsilon) # P(true) = epsilon, if true action is random, if false chose best action
             if prob_eps:
                 action = random.choice(legalActions)
@@ -204,6 +205,9 @@ class ApproximateQAgent(PacmanQAgent):
           where * is the dotProduct operator
         """
         features = self.featExtractor.getFeatures(state, action)
+        # print("These are the features of the state action pair:")
+        # print(features)
+        # print("End test")
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
 
@@ -213,6 +217,9 @@ class ApproximateQAgent(PacmanQAgent):
         """
         features = self.featExtractor.getFeatures(state, action)
         "*** YOUR CODE HERE ***"
+        weights = self.getWeights()
+        old_w = weights.get((state,action), 0.0)
+        # next_state
         util.raiseNotDefined()
 
     def final(self, state):
