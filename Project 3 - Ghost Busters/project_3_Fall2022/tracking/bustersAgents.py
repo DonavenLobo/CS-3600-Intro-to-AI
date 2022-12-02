@@ -168,4 +168,22 @@ class GreedyBustersAgent(BustersAgent):
              if livingGhosts[i+1]]
         "*** YOUR CODE HERE ***"
 
-        util.raiseNotDefined()
+        # Determine the minimum position of the ghosts
+        ghost_list = []
+        for distribution in livingGhostPositionDistributions:
+            ghost_list.append(distribution.argMax())
+        min_pos = min(ghost_list)
+
+        # Find action that gets closest to closest ghost
+        best_action = None  # Initialize best action to take
+        min_dist = None # Initialize the minimum distance to closest ghost
+        for action in legal:
+            successor_position = Actions.getSuccessor(pacmanPosition, action)
+            successor_distance = self.distancer.getDistance(successor_position, min_pos)
+            if min_dist is None:
+                min_dist = successor_distance
+                best_action = action
+            elif successor_distance < min_dist:
+                min_dist = successor_distance
+                best_action = action
+        return best_action

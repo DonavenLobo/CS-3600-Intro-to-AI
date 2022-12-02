@@ -293,10 +293,17 @@ class ExactInference(InferenceModule):
         position is known.
         """
         "*** YOUR CODE HERE ***"
+        # Observation: Noisy data on where the ghosts are, not reliable but have useful information
+        pacman_pos = gameState.getPacmanPosition() # Stores pacman position
+        new_beliefs = util.Counter() # Need to create new counter for new beliefs since need to use old beliefs
 
+        for c in self.allPositions: # Iterate through all positions
+            new_beliefs[c] = self.getObservationProb(observation, pacman_pos, c, self.getJailPosition()) * self.beliefs[c]
 
+        self.beliefs = new_beliefs
         self.beliefs.normalize()
-        raiseNotDefined()
+
+
 
     def elapseTime(self, gameState):
         """
@@ -319,13 +326,15 @@ class ExactInference(InferenceModule):
         """
         "*** YOUR CODE HERE ***"
 
+        new_beliefs = util.Counter() # Need to create new counter for new beliefs since need to use old beliefs
+        for old_pos in self.allPositions:
+            new_pos_dist = self.getPositionDistribution(gameState, old_pos)
+            for new_pos, prob in new_pos_dist.items():
+                new_beliefs[new_pos] += self.beliefs[old_pos] * prob
 
-
-
+        self.beliefs = new_beliefs
         self.beliefs.normalize()
 
-
-        raiseNotDefined()
 
     def getBeliefDistribution(self):
         return self.beliefs
@@ -353,10 +362,9 @@ class ParticleFilter(InferenceModule):
         self.particles = []
         "*** YOUR CODE HERE ***"
 
+        for i in range(self.numParticles):
+            self.particles.append(self.legalPositions[i % len(self.legalPositions)]) # Uniformly initialize the particles
 
-
-
-        raiseNotDefined()
 
     def observeUpdate(self, observation, gameState):
         """
@@ -384,7 +392,22 @@ class ParticleFilter(InferenceModule):
 
         tmp = DiscreteDistribution()
 
+        pacman_pos = gameState.getPacmanPosition()
+        jail_pos = self.getJailPosition()
 
+        # Add probabilities of particles being at a position and weight them using discrete distribution class
+        for particle in self.particles:
+            tmp[particle] += self.getObservationProb(observation, pacman_pos, particle, jail_pos)
+
+        if tmp.total() != 0: # Check for special case
+            # Re-sample to get new list
+            new_dist = []
+            for i in range(self.numParticles):
+                new_dist.append(tmp.sample())
+            self.particles = new_dist
+
+        else: # Special Case: All particles have zero weight
+            self.initializeUniformly(gameState)
 
     def elapseTime(self, gameState):
         """
@@ -401,11 +424,13 @@ class ParticleFilter(InferenceModule):
 
         """
         "*** YOUR CODE HERE ***"
+        #  construct a new list of particles that corresponds to each existing particle in self.particles advancing a time step
+        particles_new = [] # Initialize new particle position array
+        for particle in self.particles:
+            newPosDist = self.getPositionDistribution(gameState, particle) # Get position distribution given old particle position
+            particles_new.append(newPosDist.sample()) # Sample the new position distribution to get new position for particle
+        self.particles = particles_new
 
-
-
-
-        raiseNotDefined()
 
     def getBeliefDistribution(self):
         """
@@ -416,10 +441,16 @@ class ParticleFilter(InferenceModule):
         This function should return a normalized distribution.
         """
         "*** YOUR CODE HERE ***"
+        beliefs = util.Counter() # Initialize a dictionary to hold positions where particles are
+        # Tally the positions where particles are
+        for particle_pos in self.particles:
+            beliefs[particle_pos] += 1
 
+        # Normalize the dictionary to make it percentages
+        beliefs.normalize()
 
+        return beliefs
 
-        raiseNotDefined()
 
 
 class JointParticleFilter(ParticleFilter):
@@ -570,3 +601,5 @@ class MarginalInference(InferenceModule):
         for t, prob in jointDistribution.items():
             dist[t[self.index - 1]] += prob
         return dist
+
+
